@@ -1,3 +1,41 @@
+import express from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const PORT = 3000;
+
+// 1. Built-in middleware to serve static assets
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 2. Explicit routes
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+app.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+});
+
+app.get('/contact-me', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'contact-me.html'));
+});
+
+// 3. 404 Catch-all
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
+});
+
+app.listen(PORT, () => {
+  console.log(`Express server running at http://localhost:${PORT}`);
+});
+
+/*
+Vanilla Node.js
+
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -64,3 +102,4 @@ const server = http.createServer((req, res) => {
 server.listen(8080, () => {
   console.log('Server is running at http://localhost:8080');
 });
+*/
