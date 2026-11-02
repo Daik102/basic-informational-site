@@ -1,31 +1,28 @@
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
+const __dirname = import.meta.dirname;
 
 // 1. Built-in middleware to serve static assets
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 2. Explicit routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.get('/about', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'about.html'));
+  res.sendFile(path.join(__dirname, 'public/about.html'));
 });
 
 app.get('/contact-me', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'contact-me.html'));
+  res.sendFile(path.join(__dirname, 'public/contact-me.html'));
 });
 
 // 3. 404 Catch-all
-app.use((req, res) => {
+app.get('/{*splat}', (req, res) => {
   res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
